@@ -1,0 +1,65 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+
+{% block content %}
+    
+<div class="container mb-5">
+    <div class="col-11 mx-auto mt-5 c">
+        <h1>Ingresar .xlsx de ventas</h1>
+    </div>
+
+    <div class="col-11 mx-auto mt-3 mb-5 c">
+        <h4>Subir archivo de ventas hechas</h4>
+    </div>
+
+    <hr>
+
+    <div class="col-11 mx-auto mt-5">
+        <div class="row">
+            <div class="col-7 mx-auto mb-3">
+                <h3>Ingrese el Archivo de Ventas</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="inputxlsx" class="form-label">Ingrese .xlsx de las Ventas a Procesar</label>
+                        <input class="form-control" type="file" name="inputxlsx">
+                    </div>
+
+                    <div class="mt-2 mb-3">
+                        <label class="form-label">Nombre de la hoja en el .xlsx</label>
+                        <input class="form-control" type="text" name="sheet" placeholder="Sheet name">
+                    </div>
+
+                    <div class="mt-2 mb-3">
+                        <label class="form-label">Mes de Ventas</label>
+                        <input class="form-control" type="text" name="month" placeholder="Month">
+                    </div>
+
+                    <div class="col-11 mx-auto">
+                        <button id="butSpin" class="btn btn-primary btn-sm btn-color mt-3" type="submit" name="submit">Procesar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-4">
+                <div class="col-11 mx-auto mb-3">
+                    <h3>Algunas recomendaciones</h3>
+                    <p>Fijate que sea un archivo .xlsx de lo contrario recibiras un error</p>
+                    <p>Si el archivo ya se proceso, el folder anterior se sobreescribe</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="spin" class="col-10 mx-auto color_blue mt-3 c borde">
+        <div class="spinner ">
+            <h1>Loading</h1>
+            <h3>Please whait, this may take some time</h3>
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/spinner.js' %}"></script>
+
+{% endblock %}

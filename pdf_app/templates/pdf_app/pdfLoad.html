@@ -1,0 +1,69 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+
+{% block content %}
+    
+<div class="container mb-5">
+    <div class="col-11 mx-auto mt-5 c">
+        <h1>Manipular Archivos PDF</h1>
+    </div>
+
+    <div class="col-11 mx-auto mt-3 mb-5 c">
+        <h4>Subir un archivo PDF</h4>
+    </div>
+
+    <hr>
+
+    <div class="col-11 mx-auto mt-5">
+        <div class="row">
+            <div class="col-7 mx-auto mb-3">
+                <h3>Ingrese el Archivo a adicionar</h3>
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="mb-3">
+                        <label for="inputPdf" class="form-label">Ingrese Archivo .PDF a Procesar</label>
+                        <input class="form-control" type="file" name="inputPdf">
+                    </div>
+
+                    <div class="mt-2 mb-3">
+                        <label class="form-label">Mes</label>
+                        <input class="form-control" type="text" name="mes" placeholder="Ene">
+                    </div>
+
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="Compu" checked>
+                        <label class="form-check-label" for="exampleRadios1">Salvar solo en Local</label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios3" value="AllSave">
+                        <label class="form-check-label" for="exampleRadios3">Salvar Local y Google Drive</label>
+                    </div>
+
+                    <div class="col-11 mx-auto">
+                        <button id="butSpin" class="btn btn-primary btn-sm btn-color mt-3" type="submit" name="submit">Procesar</button>
+                    </div>
+                </form>
+            </div>
+
+            <div class="col-4">
+                <div class="col-11 mx-auto mb-3">
+                    <h3>Algunas recomendaciones</h3>
+                    <p>Fijate que sea un archivo PDF</p>
+                    <p>Si el archivo ya se proceso, el folder anterior se sobreescribe</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="spin" class="col-10 mx-auto color_blue mt-3 c borde">
+        <div class="spinner ">
+            <h1>Loading</h1>
+            <h3>Please whait, this may take some time</h3>
+        </div>
+    </div>
+
+</div>
+
+<script src="{% static 'js/spinner.js' %}"></script>
+
+{% endblock %}

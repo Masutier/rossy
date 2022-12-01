@@ -1,0 +1,26 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg navbar-dark a1 stic">
+    <div class="container-fluid">
+    <a class="navbar-brand " href="/"><img src="{% static '/img/icons8-file-48.png' %}" class="imgnav" alt="Rossy" /></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarDrop" aria-controls="navbarDrop" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarDrop">
+        <ul class="navbar-nav me-auto">
+            <li class="nav-item"><a class="nav-link atxt1" href="{% url 'pdfTool' %}">Catalogos</a></li>
+            <li class="nav-item"><a class="nav-link atxt1" href="{% url 'xlsTool' %}">Cuentas Cobro</a></li>
+            
+            <li class="nav-item"><a class="nav-link atxt1" href="{% url 'pdfExport' %}">pdfExport</a></li>
+            
+        </ul>
+        <ul class="navbar-nav mt-2 mt-lg-0">
+            {% if user.is_authenticated %}
+                <li class="nav-item navtext"><a class="nav-link atxt1" href="#">Out</a></li>
+            {% else %}
+                <li class="nav-item navtext"><a class="nav-link atxt1" href="#">Log</a></li>
+            {% endif %}
+        </ul>
+    </div>
+    </div>
+</nav>

@@ -1,0 +1,11 @@
+.env
+venv
+venv/*
+
+xxx/*
+settings.yaml
+mail_app/__pycache__
+pdf_app/__pycache__
+rossy/__pycache__
+tooling/__pycache__
+xls_app/__pycache__

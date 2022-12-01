@@ -1,0 +1,17 @@
+{% extends 'rossy/layout.html' %}
+
+{% block content %}
+    
+<div class="col-10 mx-auto">
+    <div class="col-9 mx-auto mt-3 mb-5">
+        <h1>Tabla de Ventas de {{ month }} con {{ records }} registros</h1>
+    </div>
+
+    {% include 'sales/partials/table.html' %}
+
+    <div class="col-11 mx-auto mt-3 mb-5">
+        <a class="btn btn-primary btn-sm btn-color c" href="{% url 'xlsTool' %}">Ir a pagina xls Principal</a>
+    </div>
+</div>
+
+{% endblock %}

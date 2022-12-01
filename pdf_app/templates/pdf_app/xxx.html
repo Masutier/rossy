@@ -1,0 +1,12 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-12 mx-auto mb-5 ">
+    {% for x in data1 %}
+    <h2>{{ x }}</h2>
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,39 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+
+{% block content %}
+
+    <div class="col-12 mx-auto mb-5 ">
+        {% if catalogList %}
+        <div class="col-11 mx-auto mt-3 mb-5">
+            <div class="col-11 mx-auto mt-3 mb-5 c">
+                <h4>Imagenes previas en disco local</h4>
+            </div>
+
+            <div class="col-7 mx-auto mb-3">
+                <h3>Ingrese el Archivo a adicionar</h3>
+                <form method="POST">
+                    {% csrf_token %}
+
+                    <select class="form-select" multiple aria-label="multiple select example">
+                        {% for cat in catalogList %}
+                            <option name="cat" value="{{ cat }}">{{ cat }}</option>
+                        {% endfor %}
+                    </select>
+
+                    <div class="col-11 mx-auto">
+                        <button id="butSpin" class="btn btn-primary btn-sm btn-color mt-3" type="submit" name="submit">Procesar</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+        {% else %}
+            <div class="col-11 mx-auto">
+                <h2>No se encontraron directorios en la carpeta "destiny"</h2>
+            </div>
+
+        {% endif %}
+    </div>
+
+{% endblock %}

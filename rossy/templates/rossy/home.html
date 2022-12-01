@@ -1,0 +1,55 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="col-12 mt-5 c">
+    <h1>Rossy's Shop</h1>
+</div>
+
+<div class="col-11 mx-auto mt-5">
+    <div class="col-5 mx-auto c ctxt1">
+        <h2>Procesar Catalogos</h2>
+    </div>
+
+    <div class="row">
+        <div class="col-5 mx-auto c">
+            <a class="nav-link atxt1" href="{% url 'pdfTool' %}">
+                <h3>Procesar catalogos</h3>
+            </a>
+
+            <p>En esta seccion es para convertir los catalogos en fotos .jpg individuales.</p>
+        </div>
+
+        <div class="col-5 mx-auto c">
+            <a class="nav-link atxt1" href="#">
+                <h3>Subir Catalogos a Google Drive</h3>
+            </a>
+
+            <p>En esta seccion se suben los catalogos ya procesados a .jpg al drive de Google info.zanahora@gmail.com en catalogos y la carpeta con la fecha del dia en que se suban</p>
+        </div>
+    </div>
+</div>
+
+<div class="col-11 mx-auto mt-5">
+    <div class="row">
+        <div class="col-5 mx-auto c">
+            <a class="nav-link atxt1" href="xlsTool">
+                <h3>Subir archivos .XLSX para proceso</h3>
+            </a>
+
+            <p>This section show how to manipulate .xlsx files, how to create, insert new data in new columns 
+                make math operations and more.</p>
+        </div>
+
+        <div class="col-5 mx-auto c">
+            <a class="nav-link atxt1" href="#">
+                <h3>Generar cuentas de cobro en .PDF</h3>
+            </a>
+
+            <p>This section show how to create, read and modify .pdf files.</p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
