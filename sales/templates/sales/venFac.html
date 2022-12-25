@@ -1,0 +1,21 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+<div class="col-12 mx-auto mt-5 mb-5">
+    <h2 class="c">{{ salesName }}</h2>
+    <hr>
+    <div class="row">
+        <div class="col-5 mx-auto">
+            {% include 'sales/partials/tablaVentas.html' %}
+        </div>
+
+        <div class="col-7 mx-auto">
+            {% include 'sales/partials/tablaFacturas.html' %}
+        </div>
+    </div>
+</div>
+{% endblock %}

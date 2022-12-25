@@ -5,8 +5,8 @@ from django.shortcuts import render, redirect
 from PyPDF2 import PdfFileReader, PdfFileWriter, PdfReader
 from .utils import *
 
-destiny_path = "/home/gabriel/Downloads/catalogRossy/destiny/"
-origen_path = "/home/gabriel/Downloads/catalogRossy/"
+destiny_path = "/home/gabriel/Documents/catalogRossy/destiny/"
+origen_path = "/home/gabriel/Downloads/"
 endDir = ""
 
 
@@ -155,7 +155,6 @@ def pdfLoad(request):
 
 
 def pdfExport(request):
-
     catalogList = []
     cat = ""
     path = (destiny_path)
@@ -176,7 +175,6 @@ def pdfExport(request):
                 print("**********", data)
             else:
                 print(cat)
-
 
         context = {"title": "xxx", 'data':data}
         return render(request, 'pdf_app/xxx.html', context)

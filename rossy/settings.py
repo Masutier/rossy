@@ -3,7 +3,7 @@ import json
 from pathlib import Path
 
 
-with open("/home/gabriel/prog/json_config/rossy.json") as config_file:
+with open("/home/gabriel/prog/json_config/rossy_tools.json") as config_file:
     config = json.load(config_file)
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -21,10 +21,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'pdf_app',
     'rossy',
     'sales',
-    
 ]
 
 MIDDLEWARE = [

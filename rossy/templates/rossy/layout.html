@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/color.css' %}" type="text/css" />
 
     {% if title %}
-        <title>Rossy's - {{ title }}</title>
+        <title>Rossy's - {% block title %}{% endblock %}</title>
     {% else %}
         <title>Rossy's Shop .</title>
     {% endif %}
@@ -20,7 +20,7 @@
 <body class="body ">
     {% include 'rossy/partials/navbar.html' %}
 
-    <div>
+    <div class="col-10 mx-auto c">
         {% if messages %}
             {% include 'rossy/partials/messages.html' %}
         {% endif %}

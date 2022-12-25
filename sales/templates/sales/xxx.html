@@ -1,0 +1,89 @@
+{% extends 'rossy/layout.html' %}
+{% load static %}
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+<div class="col-11 mx-auto mt-5 mb-5">
+    <div class="row">
+        <div class="col-6 mx-auto">
+            <h2 class="c">Consultar Documentos</h2>
+            <p>Esta seccion muestra las discrepancias en la lista de ventas y la factura del mes, Que se olvido cobrar y que no llego</p>
+
+            <div class="col-12 mx-auto mb-3">
+                <h3 class="atxt1 c">Ventas NovaVenta</h3>
+                <form method="POST" id="docNova">
+                    {% csrf_token %}
+                    {% for mes in venmesesNova %}
+                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docNova" value="{{ mes }}">{{ mes }}</button>
+                    {% endfor %}
+                </form>
+            </div>
+
+            <hr>
+
+            <div class="col-12 mx-auto mb-3">
+                <h3 class="atxt1 c">Ventas Leonisa</h3>
+                <form method="POST" id="docLeo">
+                    {% csrf_token %}
+                    {% for mes in venmesesLeo %}
+                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docLeo" value="{{ mes }}">{{ mes }}</button>
+                    {% endfor %}
+                </form>
+            </div>
+
+            <hr>
+
+            <div class="col-12 mx-auto mb-3">
+                <h3 class="atxt1 c">Ventas Moda Internacional</h3>
+                <form method="POST" id="docModa">
+                    {% csrf_token %}
+                    {% for mes in venmesesModa %}
+                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docModa" value="{{ mes }}">{{ mes }}</button>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+
+        <div class="col-6 mx-auto">
+            <h2 class="c">Consultar Cobros</h2>
+            <p>Esta seccion muestra la lista de ventas de los productos que llegaron</p>
+
+            <div class="col-12 mx-auto mb-3">
+                <h3 class="atxt1 c">xx Ventas NovaVenta</h3>
+                <form method="POST" id="cobNova">
+                    {% csrf_token %}
+                    {% for mes in venmesesNova %}
+                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="cobNova" value="{{ mes }}">{{ mes }}</button>
+                    {% endfor %}
+                </form>
+            </div>
+
+            <hr>
+
+            <div class="col-12 mx-auto mb-3">
+                <h3 class="atxt1 c">xx Ventas Leonisa</h3>
+                <form method="POST" id="cobLeo">
+                    {% csrf_token %}
+                    {% for mes in venmesesLeo %}
+                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="cobLeo" value="{{ mes }}">{{ mes }}</button>
+                    {% endfor %}
+                </form>
+            </div>
+
+            <hr>
+
+            <div class="col-12 mx-auto mb-3">
+                <h3 class="atxt1 c">xx Ventas Moda Internacional</h3>
+                <form method="POST" id="cobModa">
+                    {% csrf_token %}
+                    {% for mes in venmesesModa %}
+                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="cobModa" value="{{ mes }}">{{ mes }}</button>
+                    {% endfor %}
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

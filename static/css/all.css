@@ -31,6 +31,8 @@ body {
     background:#1b1466;
     border-color: #1b1466;
 }
+
+
 /* navbart */
 
 .imgnav {
@@ -56,6 +58,7 @@ body {
 .prod {
     z-index: -1 !important;
 }
+
 /* footer */
 
 .b-fixed{
@@ -86,11 +89,13 @@ body {
 }
 
 /* bootstrap */
+
 .toast-body{
     color: black !important;
 }
 
 /* ICONS */
+
 .imgico{
     width: 80px;
     height: auto;
@@ -101,4 +106,42 @@ body {
     padding-top: 2px;
     padding-left: 30px;
     z-index: 1000;
+}
+
+.imgventas{
+    width: 400px;
+    height: auto;
+    vertical-align: middle;
+    border-style: none;
+    -webkit-margin-bottom-collapse: initial;
+    margin-right: 30PX;
+    padding-top: 2px;
+    padding-left: 30px;
+    z-index: 1000;
+}
+
+.imgfacturas{
+    width: 700px;
+    height: auto;
+    vertical-align: middle;
+    border-style: none;
+    -webkit-margin-bottom-collapse: initial;
+    margin-right: 30PX;
+    padding-top: 2px;
+    padding-left: 30px;
+    z-index: 1000;
+}
+
+/* TEXTOS */
+
+.txtupp {
+    text-transform: uppercase;
+}
+
+.txtlow {
+    text-transform: lowercase;
+}
+
+.txtcap {
+    text-transform: capitalize;
 }

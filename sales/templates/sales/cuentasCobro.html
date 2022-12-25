@@ -1,63 +1,66 @@
 {% extends 'rossy/layout.html' %}
+{% load humanize %}
 {% load static %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block content %}
-    
-<div class="container mb-5">
-    <div class="col-11 mx-auto mt-5 c">
-        <h1>Creacion Cuentas de Cobro</h1>
-    </div>
 
-    <div class="col-11 mx-auto mt-3 mb-5 c">
-        <h4>Subir archivo de ventas y facturas para generar Cuentas de Cobro</h4>
-    </div>
+<div class="col-11 mx-auto mt-5 mb-5">
+    <h2>Cuentas de Cobro del mes de {{ month }} para {{ salesName }}</h2>
+    <p>Valor Un NO incluye IVA</p>
 
-    <hr>
+    <div class="col-12 mx-auto mt-5">
+        <h2 class="c">Cuentas de Cobro</h2>
+        <hr>
 
-    <div class="col-11 mx-auto mt-5">
-        <div class="row">
-            <div class="col-6 mx-auto mb-3 c">
-                <a class="nav-link atxt1" href="{% url 'loadXlsxSales' %}">
-                    <h3>Proceso del Archivo de Ventas</h3>
-                </a>
-            </div>
-
-            <div class="col-6 mx-auto mb-3 c">
-                <a class="nav-link atxt1" href="{% url 'loadXlsxFactura' %}">
-                    <h3>Proceso de la Factura</h3>
-                </a>
-            </div>
+        <div class="col-10 mx-auto">
+            <table class="table table-dark table-striped table.sm">
+                <thead>
+                    <tr>
+                        <th>Codigo</th>
+                        <th>Comprador</th>
+                        <th>descripcion</th>
+                        <th>Cantidad</th>
+                        <th>Valor Un</th>
+                        <th>SubTotal</th>
+                        <th>iva</th>
+                        <th>Valor Iva</th>
+                        <th>Total Item</th>
+                        <th>Fecha Pago</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for one in cuentasCobro %}
+                        <tr>
+                            <td>{{ one.codigo }}</td>
+                            <td class="txtupp">{{ one.comprador }}</td>
+                            <td class="txtupp">{{ one.descripcion }}</td>
+                            <td>{{ one.cantidad }}</td>
+                            <td>{{ one.valorUn|intcomma }}</td>
+                            <td>{{ one.subTotal|intcomma }}</td>
+                            <td>{{ one.iva }}</td>
+                            <td>{{ one.valorIva|floatformat:".00" }}</td>
+                            <td>{{ one.subTotIva|floatformat:".00" }}</td>
+                            <td>{{ one.fechaLimite }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>{{ total }}</td>
+                    </tr>
+                </tbody>
+            </table>
         </div>
-    </div>
 
-    <div class="col-11 mx-auto mt-5">
-        <div class="row">
-            <div class="col-6 mx-auto mb-3 c">
-                <h3>Historia de Ventas</h3>
-                {% for mes in meses %}
-                    <a class="nav-link atxt1" href="#">
-                        <h5>{{ mes }}</h5>
-                    </a>
-                {% endfor %}
-            </div>
 
-            <div class="col-6 mx-auto mb-3 c">
-                <a class="nav-link atxt1" href="#">
-                    <h3>Proceso de la Factura</h3>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <div id="spin" class="col-10 mx-auto color_blue mt-3 c borde">
-        <div class="spinner ">
-            <h1>Loading</h1>
-            <h3>Please whait, this may take some time</h3>
-        </div>
     </div>
 
 </div>
-
-<script src="{% static 'js/spinner.js' %}"></script>
-
 {% endblock %}

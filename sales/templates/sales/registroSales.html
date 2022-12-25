@@ -1,6 +1,8 @@
 {% extends 'rossy/layout.html' %}
 {% load static %}
 
+{% block title %}{{title}}{% endblock %}
+
 {% block content %}
     
 <div class="container mb-5">
@@ -33,6 +35,21 @@
                     <div class="mt-2 mb-3">
                         <label class="form-label">Mes de Ventas</label>
                         <input class="form-control" type="text" name="month" placeholder="Month">
+                    </div>
+
+                    <div class="mt-2 mb-3">
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="mysales" id="novaventa" value="novaventa">
+                            <label class="form-check-label" for="novaventa">Novaventa</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="mysales" id="leonisa" value="leonisa">
+                            <label class="form-check-label" for="leonisa">Leonisa</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="mysales" id="moda" value="moda">
+                            <label class="form-check-label" for="moda">Moda Internacional</label>
+                        </div>
                     </div>
 
                     <div class="col-11 mx-auto">
