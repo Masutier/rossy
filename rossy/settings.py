@@ -87,7 +87,7 @@ EMAIL_HOST_USER = config['EMAIL_USER']# info.zanahora@gmail.com
 EMAIL_HOST_PASSWORD = config['EMAIL_PASSWORD']
 
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True

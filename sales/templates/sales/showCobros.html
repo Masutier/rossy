@@ -1,0 +1,21 @@
+{% extends 'rossy/layout.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h2>Cuentas de Cobro de {{ salesName }}</h2>
+
+    <form method="POST" id="cobNova">
+        {% csrf_token %}
+        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="cobNova" value="{{ month }}">Imprimir</button>
+    </form>
+
+</div>
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    {% include 'sales/partials/tablaCobros.html' %}
+</div>
+{% endblock %}

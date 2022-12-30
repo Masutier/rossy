@@ -103,3 +103,45 @@ def createCuentaCobro(salesName, month):
                 )
 
     return
+
+
+def selection(revista, month):
+    factSele = []
+    ventSele = []
+    selected = []
+    selectedII = []
+    if revista == "novaventa":
+        ventas = SaleNova.objects.filter(month=month)
+        facturas = FacturaNova.objects.filter(month=month)
+
+
+        for fact in facturas:
+            if fact.codigo not in factSele:
+                factSele.append(fact.codigo)
+                
+        for venta in ventas:
+            if venta.codigo not in ventSele:
+                ventSele.append(venta.codigo)
+                
+        for vent in ventSele:
+
+            if vent not in factSele and vent not in selected:
+                selected.append(vent)
+
+            else:
+                if vent not in selectedII:
+                    selectedII.append(vent)
+
+        print('sele', selected)
+        print('seII', selectedII)
+
+
+    elif revista == "leonisa":
+        ventas = SaleLeonisa.objects.filter(month=month)
+        facturas = FacturaLeonisa.objects.filter(month=month)
+    elif revista == "moda":
+        ventas = SaleModa.objects.filter(month=month)
+        facturas = FacturaModa.objects.filter(month=month)
+
+
+

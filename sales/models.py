@@ -21,12 +21,9 @@ class SaleNova(models.Model):
 class FacturaNova(models.Model):
     codigo = models.CharField(max_length=7)
     descripcion = models.CharField(max_length=150)
-    iva = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cantidad = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
-    valorUn = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    valorIva = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    subTotal = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    total = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
+    catalogo = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
+    ganancia = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
     month = models.CharField(max_length=30)
 
 
@@ -57,12 +54,9 @@ class SaleLeonisa(models.Model):
 class FacturaLeonisa(models.Model):
     codigo = models.CharField(max_length=7)
     descripcion = models.CharField(max_length=150)
-    iva = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cantidad = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
-    valorUn = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    valorIva = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    subTotal = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    total = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
+    catalogo = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
+    ganancia = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
     month = models.CharField(max_length=30)
 
 
@@ -93,12 +87,9 @@ class SaleModa(models.Model):
 class FacturaModa(models.Model):
     codigo = models.CharField(max_length=7)
     descripcion = models.CharField(max_length=150)
-    iva = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
     cantidad = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
-    valorUn = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    valorIva = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    subTotal = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    total = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
+    catalogo = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
+    ganancia = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
     month = models.CharField(max_length=30)
 
 
@@ -117,8 +108,7 @@ class Cobros(models.Model):
     comprador = models.CharField(max_length=100)
     descripcion = models.CharField(max_length=150)
     cantidad = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
-    valorUn = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
-    iva = models.DecimalField(max_digits=3, decimal_places=0, blank=True, null=True)
+    catalogo = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
     fechaLimite = models.DateField()
 
     def __str__(self):
@@ -127,4 +117,3 @@ class Cobros(models.Model):
 
     def get_cobros_absolute_url(self):
         return reverse("CobrosaDetail", kwargs={"pk": self.pk})
-

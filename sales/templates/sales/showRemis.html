@@ -1,0 +1,15 @@
+{% extends 'rossy/layout.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h2>Remisiones de {{ salesName }}</h2>
+</div>
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    {% include 'sales/partials/tablaRemis.html' %}
+</div>
+{% endblock %}

@@ -4,75 +4,140 @@
 
 {% block content %}
     
-<div class="container mb-5">
-    <div class="col-11 mx-auto mt-5 c">
-        <h1>Creacion Cuentas de Cobro</h1>
-    </div>
 
-    <div class="col-11 mx-auto mt-3 mb-5 c">
-        <h4>Subir archivo de ventas y facturas para generar Cuentas de Cobro</h4>
-    </div>
+<div class="col-11 mx-auto mt-4 mb-5 ">
+    <h2>Mis Ventas</h2>
+    <h4>Subir Listado de ventas y Remisiones para generar Cuentas de Cobro</h4>
+    <h2 class="atxt3 c">Leonisa, NovaVenta y Moda Internacional</h2>
 
     <hr>
 
     <div class="row mt-4">
-        <div class="col-8 mx-auto">
-            <h2 class="atxt3 c">Leonisa, NovaVenta y Moda Internacional</h2>
-
-            <a class="nav-link atxt1" href="{% url 'loadXlsxSales' %}">
-                <h3>Ingresar el Archivo de Ventas</h3>
+        <div class="col-6 mx-auto">
+            <a class="nav-link atxt1 mt-3" href="{% url 'loadXlsxSales' %}">
+                <h3>Ingresar el Listado de Ventas</h3>
                 <img src="{% static '/img/ventas.png' %}" class="imgventas mb-3" alt="VENTAS" />
                 <h6>Estar pendiente si es de NovaVenta, Leonisa y Moda Internacional</h6>
                 <h6>El archivo a ingresar deve ser .xlsx y las columnas igual a la imagen</h6>
                 <h6>La lista de las ventas se ingresa con el mismo mes que la factura ej: "Nov22"</h6>
             </a>
+        </div>
 
-            <a class="nav-link atxt1 mt-5" href="{% url 'loadXlsxFactura' %}">
-                <h3>Ingresar las Facturas</h3>
-                <img src="{% static '/img/factura.png' %}" class="imgfacturas mb-3" alt="FACTURA" />
+        <div class="col-6 mx-auto c">
+            <a class="nav-link atxt1 mt-3" href="{% url 'loadXlsxFactura' %}">
+                <h3>Ingresar la Remision</h3>
+                <img src="{% static '/img/facturaModel.png' %}" class="imgfacturas mb-3" alt="FACTURA" />
                 <h6>Estar pendiente si es de NovaVenta, Leonisa y Moda Internacionalo</h6>
                 <h6>El archivo a ingresar deve ser .xlsx y las columnas igual a la imagen</h6>
-                <h6>Tener cuidado que el mes de la factura sea el mismo que la lista de ventas ej: "Nov22"</h6>
+                <h6>Tener cuidado que el mes de la Remision sea el mismo que la lista de ventas ej: "Nov22"</h6>
             </a>
         </div>
+    </div>
 
-        <div class="col-4 mx-auto c">
-            <h2 class="atxt3 c">Historia</h2>
-            <h3 class="atxt1 c">Historia NovaVenta</h3>
-            <form method="POST" id="docNova">
+    <hr>
+    <h2>Consulta Mis Ventas</h2>
+    <h3>NovaVenta</h3>
+
+    <div class="row">
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Ventas</h4>
+            <form method="POST" id="docVentNova">
                 {% csrf_token %}
-                {% for mes1 in venmesesNova %}
-                    {% if mes1 in facmesesNova %}
-                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docNova" value="{{ mes1 }}">{{ mes1 }}</button>
-                    {% endif%}
-                {% endfor %}
-            </form>
-
-            <hr>
-
-            <h3 class="atxt1 c">Historia Leonisa</h3>
-            <form method="POST" id="docLeo">
-                {% csrf_token %}
-                {% for mes2 in venmesesLeo %}
-                    {% if mes2 in facmesesLeo %}
-                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docLeo" value="{{ mes2 }}">{{ mes2 }}</button>
-                    {% endif%}
-                {% endfor %}
-            </form>
-
-            <hr>
-
-            <h3 class="atxt1 c">Historia Moda Internacional</h3>
-            <form method="POST" id="docModa">
-                {% csrf_token %}
-                {% for mes3 in venmesesModa %}
-                    {% if mes3 in facmesesModa %}
-                        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docModa" value="{{ mes3 }}">{{ mes3 }}</button>
-                    {% endif%}
+                {% for mes in venmesesNova %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docVentNova" value="{{ mes }}">{{ mes }}</button>
                 {% endfor %}
             </form>
         </div>
 
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Remisiones</h4>
+            <form method="POST" id="docFactNova">
+                {% csrf_token %}
+                {% for mes in facmesesNova %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docFactNova" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Cuentas de Cobro</h4>
+            <form method="POST" id="docCreaNova">
+                {% csrf_token %}
+                {% for mes in cobmesesNova %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docCreaNova" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    <hr>
+    <h3>Leonisa</h3>
+
+    <div class="row">
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Ventas</h4>
+            <form method="POST" id="docVentLeo">
+                {% csrf_token %}
+                {% for mes in venmesesLeo %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docVentLeo" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Remisiones</h4>
+            <form method="POST" id="docFactLeo">
+                {% csrf_token %}
+                {% for mes in facmesesLeo %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docFactLeo" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Cuentas de Cobro</h4>
+            <form method="POST" id="docCreaLeo">
+                {% csrf_token %}
+                {% for mes in cobmesesLeo %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docCreaLeo" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+    </div>
+
+    <hr>
+    <h3>Moda Internacional</h3>
+
+    <div class="row">
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Ventas</h4>
+            <form method="POST" id="docVentModa">
+                {% csrf_token %}
+                {% for mes in venmesesModa %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docVentModa" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Remisiones</h4>
+            <form method="POST" id="docFactModa">
+                {% csrf_token %}
+                {% for mes in facmesesModa %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docFactModa" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
+
+        <div class="col-4 mx-auto">
+            <h4 class="atxt1 c">Cuentas de Cobro</h4>
+            <form method="POST" id="docCreaModa">
+                {% csrf_token %}
+                {% for mes in cobmesesModa %}
+                    <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="docCreaModa" value="{{ mes }}">{{ mes }}</button>
+                {% endfor %}
+            </form>
+        </div>
     </div>
 </div>
 

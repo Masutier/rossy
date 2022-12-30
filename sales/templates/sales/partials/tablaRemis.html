@@ -1,37 +1,25 @@
 {% load humanize %}
 {% load static %}
 
-
-<h3 class="mb-3 atxt1">Facturas del mes de {{ month }}</h3>
+<h3 class="mb-3 atxt1">Remisiones del mes de {{ month }}</h3>
 <table class="table table-dark table-striped table.sm">
     <thead>
         <tr>
-            <th>Id</th>
             <th>codigo</th>
             <th>descripción</th>
-            <th>iva</th>
             <th>cantidad</th>
-            <th>valorUn</th>
-            <th>valorIva</th>
-            <th>subTotal</th>
-            <th>total</th>
+            <th>valor</th>
             <th>month</th>
         </tr>
     </thead>
     <tbody>
         {% for factura in facturas %}
             <tr>
-                <td>{{ factura.id }}</td>
                 <td>{{ factura.codigo }}</td>
                 <td class="txtupp">{{ factura.descripcion }}</td>
-                <td>{{ factura.iva }}</td>
                 <td>{{ factura.cantidad }}</td>
-                <td>{{ factura.valorUn|intcomma }}</td>
-                <td>{{ factura.valorIva|intcomma }}</td>
-                <td>{{ factura.subTotal|intcomma }}</td>
-                <td>{{ factura.total|intcomma }}</td>
+                <td>{{ factura.catalogo|intcomma }}</td>
                 <td>{{ factura.month }}</td>
-
             </tr>
         {% endfor %}
     </tbody>

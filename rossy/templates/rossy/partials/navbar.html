@@ -10,19 +10,9 @@
         <ul class="navbar-nav me-auto">
             <li class="nav-item"><a class="nav-link atxt1" href="{% url 'pdfTool' %}">Catalogos</a></li>
             <li class="nav-item"><a class="nav-link atxt1" href="{% url 'pdfExport' %}">pdfExport</a></li>
-            
-            <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle atxt1" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">Cuentas Cobro</a>
-                <ul class="dropdown-menu">
-                    <li class="nav-item"><a class="nav-link atxt3" href="{% url 'cuentaCobro' %}">Cuentas Cobro</a></li>
-                    <li class="nav-item"><a class="nav-link atxt3" href="{% url 'consultas' %}">Consultar Documentos</a></li>
-                    <li class="nav-item"><a class="nav-link atxt3" href="{% url 'cuentas' %}">Subir .xlsx</a></li>
-                    
-                    <li><hr class="dropdown-divider"></li>
-                    <li class="nav-item"><a class="nav-link atxt3" href="{% url 'cuentas' %}">Historia</a></li>
-                </ul>
-            </li>
-            
+            <li class="nav-item"><a class="nav-link atxt1" href="{% url 'cuentas' %}">Mis Ventas</a></li>
+            <li class="nav-item"><a class="nav-link atxt1" href="{% url 'test' %}">Test</a></li>
+
         </ul>
         <ul class="navbar-nav mt-2 mt-lg-0">
             {% if user.is_authenticated %}
