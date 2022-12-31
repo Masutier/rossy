@@ -7,15 +7,28 @@
 {% block content %}
 <div class="col-9 mx-auto mt-3 mb-5">
     <h2>Cuentas de Cobro de {{ salesName }}</h2>
-
-    <form method="POST" id="cobNova">
+    <h4>Mes de {{ month }}</h4>
+    
+    <form method="POST" id="impNova">
         {% csrf_token %}
-        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="cobNova" value="{{ month }}">Imprimir</button>
+        <h4 hidden>revistaName = {{ salesName }}</h4>
+        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="impNova" value="{{ month }}">Imprimir</button>
     </form>
-
 </div>
 
 <div class="col-9 mx-auto mt-3 mb-5">
+    <h3 class="mb-3 atxt1">No Llego</h3>
+    {% include 'sales/partials/tablaVentas.html' %}
+</div>
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h3 class="mb-3 atxt1">Se me olvido ponerlo en la lista</h3>
+    {% include 'sales/partials/tablaRemis.html' %}
+</div>
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h3 class="mb-3 atxt1">Cobros del mes de {{ month }}</h3>
     {% include 'sales/partials/tablaCobros.html' %}
 </div>
+
 {% endblock %}

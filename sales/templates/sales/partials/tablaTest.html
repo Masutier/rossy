@@ -2,6 +2,7 @@
 {% load static %}
 
 <h3 class="mb-3 atxt1">Ventas del mes de {{ month }}</h3>
+<p>In Form {{ salesName }}</p>
 <table class="table table-dark table-striped table.sm">
     <thead>
         <tr>
@@ -10,6 +11,7 @@
             <th>precio</th>
             <th>comprador</th>
             <th>month</th>
+            <th>modificar</th>
         </tr>
     </thead>
     <tbody>
@@ -20,6 +22,11 @@
                 <td>{{ venta.precio|intcomma }}</td>
                 <td class="txtupp">{{ venta.comprador }}</td>
                 <td>{{ venta.month }}</td>
+                <td>
+                    <div class="c">
+                        <a class="btn btn-primary btn-color btn-sm mx-auto" href="{% url 'modificarVenta' venta.id %}">Editar</a>
+                    </div>
+                </td>
             </tr>
         {% endfor %}
     </tbody>

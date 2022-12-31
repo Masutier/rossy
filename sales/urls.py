@@ -9,7 +9,9 @@ urlpatterns = [
     path('loadXlsxFactura', loadXlsxFactura, name="loadXlsxFactura"),
     path('createCuentaCobro', createCuentaCobro, name="createCuentaCobro"),
 
-    path('test', test, name="test"),
+    path('revisarDocumentos', revisarDocumentos, name="revisarDocumentos"),
+    path('adicionarVenta', adicionarVenta, name="adicionarVenta"),
+    path('modificarVenta/<int:pk>', modificarVenta, name="modificarVenta"),
+    path('modificarRemision/<int:pk>', modificarRemision, name="modificarRemision"),
 
 ]
-

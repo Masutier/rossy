@@ -6,7 +6,9 @@ from openpyxl import Workbook, load_workbook
 from humanize import naturaltime
 from datetime import datetime, timedelta, time
 from .models import *
+from .forms import *
 from .utils import *
+from .logs import *
 from .pdf import render_to_pdf
 
 destiny_path = "/home/gabriel/Documents/catalogRossy/registros/ccobro/"
@@ -28,24 +30,24 @@ def cuentas(request):
         docCreaLeo = request.POST.get('docCreaLeo')
         docCreaModa = request.POST.get('docCreaModa')
 
-        cobNova = request.POST.get('cobNova')
+        impNova = request.POST.get('impNova')
 
         if docVentNova:
             salesName = "NovaVenta"
             month = docVentNova
-            ventas = SaleNova.objects.filter(month=docVentNova).values().order_by('comprador')
+            ventas = SaleNova.objects.filter(month=docVentNova).values().order_by('codigo')
             context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
         elif docVentLeo:
             salesName = "Leonisa"
             month = docVentLeo
-            ventas = SaleLeonisa.objects.filter(month=docVentLeo).values().order_by('comprador')
+            ventas = SaleLeonisa.objects.filter(month=docVentLeo).values().order_by('codigo')
             context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
         elif docVentModa:
             salesName = "Moda Internacional"
             month = docVentModa
-            ventas = SaleModa.objects.filter(month=docVentModa).values().order_by('comprador')
+            ventas = SaleModa.objects.filter(month=docVentModa).values().order_by('codigo')
             context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
 
@@ -72,23 +74,22 @@ def cuentas(request):
             salesName = "NovaVenta"
             revista = 'novaventa'
             month = docCreaNova
-            selection(revista, month)
-            cobros = Cobros.objects.filter(revista=revista, month=month).values().order_by('comprador')
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
+            cobros, ventas, facturas = revisarDocumentos(salesName, revista, month)
+            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
             return render(request, "sales/showCobros.html", context)
         elif docCreaLeo:
             salesName = "Leonisa"
             revista = 'leonisa'
             month = docCreaLeo
-            cobros = Cobros.objects.filter(revista=revista, month=month).values().order_by('comprador')
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
+            cobros, ventas, facturas = revisarDocumentos(salesName, revista, month)
+            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
             return render(request, "sales/showCobros.html", context)
         elif docCreaModa:
             salesName = "Moda Internacional"
             revista = 'moda'
             month = docCreaModa
-            cobros = Cobros.objects.filter(revista=revista, month=month).values().order_by('comprador')
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
+            cobros, ventas, facturas = revisarDocumentos(salesName, revista, month)
+            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
             return render(request, "sales/showCobros.html", context)
 
     context = {"title": "Cuentas", 'venmesesNova':venmesesNova, 'facmesesNova':facmesesNova, 'venmesesLeo':venmesesLeo, 'facmesesLeo':facmesesLeo, 'venmesesModa':venmesesModa, 'facmesesModa':facmesesModa, 'cobmesesNova':cobmesesNova, 'cobmesesLeo':cobmesesLeo, 'cobmesesModa':cobmesesModa}
@@ -141,7 +142,13 @@ def loadXlsxSales(request):
                     , 'comprador': data[3]
                 }
                 if salesName == "novaventa":
-                    SaleNova.objects.create (codigo=oneData['codigo'], cantidad=oneData['cantidad'], precio=oneData['precio'], comprador=oneData['comprador'], month=month)
+                    SaleNova.objects.create (
+                        codigo=oneData['codigo']
+                        , cantidad=oneData['cantidad']
+                        , precio=oneData['precio']
+                        , comprador=oneData['comprador']
+                        , month=month
+                    )
                 if salesName == "leonisa":
                     SaleLeonisa.objects.create (codigo=oneData['codigo'], cantidad=oneData['cantidad'], precio=oneData['precio'], comprador=oneData['comprador'], month=month)
                 if salesName == "moda":
@@ -203,6 +210,7 @@ def loadXlsxFactura(request):
                     , 'catalogo':data[3]
                     , 'ganancia':data[4]
                 }
+
                 if salesName == "novaventa":
                     FacturaNova.objects.create (
                         codigo=oneData['codigo']
@@ -232,7 +240,6 @@ def loadXlsxFactura(request):
                     )
 
             if month in venmeses:
-                print(salesName)
                 createCuentaCobro(salesName, month)
             
         if salesName == "novaventa":
@@ -248,109 +255,3 @@ def loadXlsxFactura(request):
     context = {"title": "Factura Ventas"}
     return render(request, "sales/registroRemis.html", context)
 
-
-def test(request):
-    revista = "novaventa"
-    month = 'Nov22'
-    today = datetime.date(datetime.now())
-    facturascodes = []
-    ventascodes = []
-    sillego = []
-    nollego = []
-    noEsta = []
-    noesta = []
-    olvidos = []
-    cantimore = []
-    masdeuna = []
-    olvidofac = []
-    cuentasCobro = []
-
-    if revista == "novaventa":
-        ventas = SaleNova.objects.filter(month=month).values()
-        facturas = FacturaNova.objects.filter(month=month).values()
-
-    for venta in ventas:
-        for factura in facturas:
-            if venta['codigo'] == factura['codigo'] and venta['cantidad'] != factura['cantidad']:
-                oneData = {
-                    'codigo': factura['codigo']
-                    , 'comprador': venta['comprador']
-                    , 'descripcion': factura['descripcion']
-                    , 'cantidad': venta['cantidad']
-                    , 'catalogo': venta['precio']
-                    , 'fechaLimite': today
-                }
-                cuentasCobro.append(oneData)
-        for factura in facturas:
-            if venta['codigo'] == factura['codigo'] and venta['cantidad'] == factura['cantidad']:
-                oneData = {
-                    'codigo': factura['codigo']
-                    , 'comprador': venta['comprador']
-                    , 'descripcion': factura['descripcion']
-                    , 'cantidad': venta['cantidad']
-                    , 'catalogo': venta['precio']
-                    , 'fechaLimite': today
-                }
-                cuentasCobro.append(oneData)
-
-    
-        for factura in facturas:
-            facturascodes.append(factura['codigo'])
-        for venta in ventas:
-            ventascodes.append(venta['codigo'])
-        
-        # EXTRAE LAS VENTAS QUE NO ESTAN EN LA FACTURA
-        for ventacode in ventascodes:
-            if ventacode not in facturascodes:
-                nollego.append(ventacode)
-        for vent in nollego:
-            for venta in ventas:
-                if vent == venta['codigo']:
-                    if venta not in noEsta:
-                        noEsta.append(venta)
-
-        # EXTRAE LAS VENTAS Y LAS FACTURAS QUE SI CONCUERDAN
-        for factura in facturas:
-            if factura['cantidad'] > 1:
-                cantimore.append(factura)
-
-        for cm in cantimore:
-            for venta in ventas:
-                if cm['codigo'] == venta['codigo'] and cm['cantidad'] >= 1:
-                    cm['cantidad'] = cm['cantidad'] - venta['cantidad']
-                    od = {
-                        'codigo': cm['codigo']
-                        , 'comprador': venta['comprador']
-                        , 'descripcion': cm['descripcion']
-                        , 'cantidad': venta['cantidad']
-                        , 'catalogo': venta['precio']
-                        , 'fechaLimite': today
-                    }
-                    masdeuna.append(od)
-                elif cm['cantidad'] == 1:
-                    if cm['codigo'] not in noesta:
-                        cm['cantidad'] = cm['cantidad'] - 1
-                        noesta.append(cm)
-                        nod = {
-                            'codigo': cm['codigo']
-                            , 'descripcion': cm['descripcion']
-                            , 'cantidad': 1
-                            , 'catalogo': venta['precio']
-                        }
-                        olvidofac.append(nod)
-
-        # SEPARA LOS CODIGOS DE LAS VENTAS QUE NO ESTAN EN LA RELACION PERO SI EN FACTURA
-        for facturacode in facturascodes:
-            if facturacode not in ventascodes:
-                olvidos.append(facturacode)
-        for factura in facturas:
-            for nofac in olvidos:
-                if factura['codigo'] == nofac:
-                    olvidofac.append(factura)
-
-        cobros = cuentasCobro
-        ventas = noEsta
-        facturas = olvidofac
-
-    context = {"title": "Cuentas", 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
-    return render(request, "sales/test.html", context)
