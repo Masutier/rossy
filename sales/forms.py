@@ -4,14 +4,14 @@ from django import forms
 from .models import *
 
 
-class SaleNovaForm(ModelForm):
+class SaleForm(ModelForm):
     class Meta:
-        model = SaleNova
+        model = Sale
         fields = '__all__'
 
 
-class FacturaNovaForm(ModelForm):
+class FacturaForm(ModelForm):
     class Meta:
-        model = FacturaNova
+        model = Invoice
         fields = '__all__'
 

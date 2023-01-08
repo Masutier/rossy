@@ -5,9 +5,9 @@ from .forms import *
 
 def adicionarVenta(request):
     revista = "novaventa"
-    form = SaleNovaForm()
+    form = SaleForm()
     if request.method == 'POST':
-        form = SaleNovaForm(request.POST)
+        form = SaleForm(request.POST)
         if form.is_valid():
             SForm = form.save(commit=False)
 
@@ -16,8 +16,8 @@ def adicionarVenta(request):
             comprador = form.cleaned_data.get('comprador')
             month = form.cleaned_data.get('month')
 
-            facturas = FacturaNova.objects.filter(codigo=codigo, month=month)
-            cobros = Cobros.objects.filter(codigo=codigo, month=month)
+            facturas = Invoice.objects.filter(revista=revista, codigo=codigo, month=month)
+            cobros = Receipt.objects.filter(revista=revista, codigo=codigo, month=month)
             for cobro in cobros:
                 if cobro.codigo == codigo:
                     fechaLimite = cobro.fechaLimite
@@ -25,10 +25,10 @@ def adicionarVenta(request):
             for factura in facturas:
                 if factura.codigo == codigo:
                     descripcion = factura.descripcion
-                    catalogo = factura.catalogo
+                    precio = factura.precio
                     qty = factura.cantidad
             
-            catalogo = catalogo / qty
+            precio = precio / qty
 
             SForm.save()
             Cobros.objects.create (
@@ -38,7 +38,7 @@ def adicionarVenta(request):
                 , descripcion = descripcion
                 , comprador = comprador
                 , cantidad = cantidad
-                , catalogo = catalogo
+                , precio = precio
                 , fechaLimite = fechaLimite
             )
 
@@ -50,13 +50,13 @@ def adicionarVenta(request):
 
 
 def modificarVenta(request, pk):
-    venta = SaleNova.objects.get(id=pk)
-    form = SaleNovaForm(instance=venta)
+    venta = Sale.objects.get(id=pk)
+    form = SaleForm(instance=venta)
     if request.method == 'POST':
-        form = SaleNovaForm(request.POST, instance=venta)
+        form = SaleForm(request.POST, instance=venta)
         if form.is_valid():
             form.save()
-            messages.success(request, f'La Venta ya quedo Modificado!')
+            messages.success(request, f'La Venta ya quedo Modificada!')
             return redirect('cuentas')
 
     context = {'title':'Editar venta', 'form':form}
@@ -64,13 +64,13 @@ def modificarVenta(request, pk):
 
 
 def modificarRemision(request, pk):
-    factura = FacturaNova.objects.get(id=pk)
-    form = FacturaNovaForm(instance=factura)
+    factura = Invoice.objects.get(id=pk)
+    form = FacturaForm(instance=factura)
     if request.method == 'POST':
-        form = FacturaNovaForm(request.POST, instance=factura)
+        form = FacturaForm(request.POST, instance=factura)
         if form.is_valid():
             form.save()
-            messages.success(request, f'La Remision ya quedo Modificado!')
+            messages.success(request, f'La Remision ya quedo Modificada!')
             return redirect('cuentas')
 
     context = {'title':'Editar factura', 'form':form}

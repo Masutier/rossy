@@ -10,6 +10,8 @@ from .forms import *
 from .utils import *
 from .logs import *
 from .pdf import render_to_pdf
+from .tests import *
+
 
 destiny_path = "/home/gabriel/Documents/catalogRossy/registros/ccobro/"
 origen_path = "/home/gabriel/Documents/catalogRossy/registros/"
@@ -17,111 +19,115 @@ endDir = ""
 
 
 def cuentas(request):
-    venmesesNova, venmesesLeo, venmesesModa, facmesesNova, facmesesLeo, facmesesModa, cobmesesNova, cobmesesLeo, cobmesesModa = meses()
+    revista = "novaventa"
+    salesMesesNova, invoicesMesesNova, receiptMesesNova = meses(revista)
+    revista = "leonisa"
+    salesMesesLeo, invoicesMesesLeo, receiptMesesLeo = meses(revista)
+    revista = "moda"
+    salesMesesModa, invoicesMesesModa, receiptMesesModa = meses(revista)
 
     if request.method == 'POST':
-        docVentNova = request.POST.get('docVentNova')
-        docVentLeo = request.POST.get('docVentLeo')
-        docVentModa = request.POST.get('docVentModa')
-        docFactNova = request.POST.get('docFactNova')
-        docFactLeo = request.POST.get('docFactLeo')
-        docFactModa = request.POST.get('docFactModa')
-        docCreaNova = request.POST.get('docCreaNova')
-        docCreaLeo = request.POST.get('docCreaLeo')
-        docCreaModa = request.POST.get('docCreaModa')
-
-        impNova = request.POST.get('impNova')
-
-        if docVentNova:
+        if request.POST.get('saleNova'):
+            month = request.POST.get('saleNova')
             salesName = "NovaVenta"
-            month = docVentNova
-            ventas = SaleNova.objects.filter(month=docVentNova).values().order_by('codigo')
+            revista = "novaventa"
+            ventas = Sale.objects.filter(revista=revista, month=month).values().order_by('codigo')
             context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
-        elif docVentLeo:
+        elif request.POST.get('saleLeo'):
+            month = request.POST.get('saleLeo')
             salesName = "Leonisa"
-            month = docVentLeo
-            ventas = SaleLeonisa.objects.filter(month=docVentLeo).values().order_by('codigo')
+            revista = "leonisa"
+            ventas = Sale.objects.filter(revista=revista, month=month).values().order_by('codigo')
             context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
-        elif docVentModa:
+        elif request.POST.get('saleModa'):
+            month = request.POST.get('saleModa')
             salesName = "Moda Internacional"
-            month = docVentModa
-            ventas = SaleModa.objects.filter(month=docVentModa).values().order_by('codigo')
+            revista = "moda"
+            ventas = Sale.objects.filter(revista=revista, month=month).values().order_by('codigo')
             context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
 
-        if docFactNova:
+        elif request.POST.get('invoiceNova'):
+            month = request.POST.get('invoiceNova')
             salesName = "NovaVenta"
-            month = docFactNova
-            facturas = FacturaNova.objects.filter(month=docFactNova).values().order_by('codigo')
-            context = {"title":"Facturas", 'salesName':salesName, 'month':month, 'facturas':facturas}
+            revista = "novaventa"
+            facturas = Invoice.objects.filter(revista=revista, month=month).values().order_by('codigo')
+            context = {"title":"Remisiones", 'salesName':salesName, 'month':month, 'facturas':facturas}
             return render(request, "sales/showRemis.html", context)
-        elif docFactLeo:
+        elif request.POST.get('invoiceLeo'):
+            month = request.POST.get('invoiceLeo')
             salesName = "Leonisa"
-            month = docFactLeo
-            facturas = FacturaLeonisa.objects.filter(month=docFactLeo).values().order_by('codigo')
-            context = {"title":"Facturas", 'salesName':salesName, 'month':month, 'facturas':facturas}
+            revista = "leonisa"
+            facturas = Invoice.objects.filter(revista=revista, month=month).values().order_by('codigo')
+            context = {"title":"Remisiones", 'salesName':salesName, 'month':month, 'facturas':facturas}
             return render(request, "sales/showRemis.html", context)
-        elif docFactModa:
+        elif request.POST.get('invoiceModa'):
+            month = request.POST.get('invoiceModa')
             salesName = "Moda Internacional"
-            month = docFactModa
-            facturas = FacturaModa.objects.filter(month=docFactModa).values().order_by('codigo')
-            context = {"title":"Facturas", 'salesName':salesName, 'month':month, 'facturas':facturas}
+            revista = "moda"
+            facturas = Invoice.objects.filter(revista=revista, month=month).values().order_by('codigo')
+            context = {"title":"Remisiones", 'salesName':salesName, 'month':month, 'facturas':facturas}
             return render(request, "sales/showRemis.html", context)
 
-        if docCreaNova:
+        elif request.POST.get('receiptNova'):
+            month = request.POST.get('receiptNova')
             salesName = "NovaVenta"
-            revista = 'novaventa'
-            month = docCreaNova
-            cobros, ventas, facturas = revisarDocumentos(salesName, revista, month)
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
+            revista = "novaventa"
+            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('codigo')
+            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
             return render(request, "sales/showCobros.html", context)
-        elif docCreaLeo:
+        elif request.POST.get('receiptLeo'):
+            month = request.POST.get('receiptLeo')
             salesName = "Leonisa"
-            revista = 'leonisa'
-            month = docCreaLeo
-            cobros, ventas, facturas = revisarDocumentos(salesName, revista, month)
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
+            revista = "leonisa"
+            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('codigo')
+            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
             return render(request, "sales/showCobros.html", context)
-        elif docCreaModa:
+        elif request.POST.get('receiptModa'):
+            month = request.POST.get('receiptModa')
             salesName = "Moda Internacional"
-            revista = 'moda'
-            month = docCreaModa
-            cobros, ventas, facturas = revisarDocumentos(salesName, revista, month)
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros, 'ventas':ventas, 'facturas':facturas}
+            revista = "moda"
+            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('codigo')
+            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
             return render(request, "sales/showCobros.html", context)
 
-    context = {"title": "Cuentas", 'venmesesNova':venmesesNova, 'facmesesNova':facmesesNova, 'venmesesLeo':venmesesLeo, 'facmesesLeo':facmesesLeo, 'venmesesModa':venmesesModa, 'facmesesModa':facmesesModa, 'cobmesesNova':cobmesesNova, 'cobmesesLeo':cobmesesLeo, 'cobmesesModa':cobmesesModa}
+    context = {
+        "title": "Cuentas"
+        , 'salesMesesNova':salesMesesNova
+        , 'invoicesMesesNova':invoicesMesesNova
+        , 'receiptMesesNova':receiptMesesNova
+        , 'salesMesesLeo':salesMesesLeo
+        , 'invoicesMesesLeo':invoicesMesesLeo
+        , 'receiptMesesLeo':receiptMesesLeo
+        , 'salesMesesModa':salesMesesModa
+        , 'invoicesMesesModa':invoicesMesesModa
+        , 'receiptMesesModa':receiptMesesModa
+    }
     return render(request, "sales/cuentas.html", context)
 
 
 def loadXlsxSales(request):
     if request.method == 'POST':
-        salesName = request.POST['salesName']
+        revista = request.POST['revista']
         month = request.POST['month']
 
-        if salesName == "novaventa":
-            ventas = SaleNova.objects.all()
-            venmeses = allVentas(ventas)
-            allfacturas = FacturaNova.objects.all()
-            facmeses = allFacturas(allfacturas)
-        elif salesName == "leonisa":
-            ventas = SaleLeonisa.objects.all()
-            venmeses = allVentas(ventas)
-            allfacturas = FacturaLeonisa.objects.all()
-            facmeses = allFacturas(allfacturas)
-        elif salesName == "moda":
-            ventas = SaleModa.objects.all()
-            venmeses = allVentas(ventas)
-            allfacturas = FacturaModa.objects.all()
-            facmeses = allFacturas(allfacturas)
-        else:
-            messages.info(request, 'No se encontro data')
-            return redirect('cuentas')
+        if revista == "novaventa":
+            salesMesesNova, invoicesMesesNova, receiptMesesNova = meses(revista)
+            salesMonth = salesMesesNova
+            invoicesMonth =invoicesMesesNova
+        if revista == "leonisa":
+            salesMesesLeo, invoicesMesesLeo, receiptMesesLeo = meses(revista)
+            salesMonth = salesMesesLeo
+            invoicesMonth = invoicesMesesLeo
+        if revista == "moda":
+            salesMesesModa, invoicesMesesModa, receiptMesesModa = meses(revista)
+            salesMonth = salesMesesModa
+            invoicesMonth = invoicesMesesModa
 
-        if month in venmeses:
-            messages.warning(request, 'La lista de Ventas de este mes ya esta procesada')
+        if month in salesMonth:
+            messages.warning(request, 'La Lista de Ventas de este mes ya esta procesada')
             return redirect('cuentas')
         else:
             xlsFile = request.FILES['inputxlsx']
@@ -141,23 +147,21 @@ def loadXlsxSales(request):
                     , 'precio': data[2]
                     , 'comprador': data[3]
                 }
-                if salesName == "novaventa":
-                    SaleNova.objects.create (
-                        codigo=oneData['codigo']
-                        , cantidad=oneData['cantidad']
-                        , precio=oneData['precio']
-                        , comprador=oneData['comprador']
-                        , month=month
-                    )
-                if salesName == "leonisa":
-                    SaleLeonisa.objects.create (codigo=oneData['codigo'], cantidad=oneData['cantidad'], precio=oneData['precio'], comprador=oneData['comprador'], month=month)
-                if salesName == "moda":
-                    SaleModa.objects.create (codigo=oneData['codigo'], cantidad=oneData['cantidad'], precio=oneData['precio'], comprador=oneData['comprador'], month=month)
-            
-            if month in facmeses:
-                createCuentaCobro(salesName, month)
-            
-            context = {"title":"Ventas", 'salesName':salesName, 'month':month, 'ventas':ventas}
+
+                Sale.objects.create (
+                    revista=revista
+                    , codigo=oneData['codigo']
+                    , cantidad=oneData['cantidad']
+                    , precio=oneData['precio']
+                    , comprador=oneData['comprador']
+                    , month=month
+                )
+
+            if month in invoicesMonth:
+                verificaVentas(revista, month)
+
+            ventas = Sale.objects.filter(month=month).values().order_by('codigo')
+            context = {"title":"Ventas", 'revista':revista, 'month':month, 'ventas':ventas}
             return render(request, "sales/showSales.html", context)
 
     context = {"title": "Registro Ventas"}
@@ -166,29 +170,23 @@ def loadXlsxSales(request):
 
 def loadXlsxFactura(request):
     if request.method == 'POST':
-        salesName = request.POST['salesName']
+        revista = request.POST['revista']
         month = request.POST['month']
+        
+        if revista == "novaventa":
+            salesMesesNova, invoicesMesesNova, receiptMesesNova = meses(revista)
+            salesMonth = salesMesesNova
+            invoicesMonth = invoicesMesesNova
+        elif revista == "leonisa":
+            salesMesesLeo, invoicesMesesLeo, receiptMesesLeo = meses(revista)
+            salesMonth = salesMesesLeo
+            invoicesMonth = invoicesMesesLeo
+        elif revista == "moda":
+            salesMesesModa, invoicesMesesModa, receiptMesesModa = meses(revista)
+            salesMonth = salesMesesModa
+            invoicesMonth = invoicesMesesModa
 
-        if salesName == "novaventa":
-            allventas = SaleNova.objects.all()
-            venmeses = allVentas(allventas)
-            facturas = FacturaNova.objects.all()
-            facmeses = allFacturas(facturas)
-        elif salesName == "leonisa":
-            allventas = SaleLeonisa.objects.all()
-            venmeses = allVentas(allventas)
-            facturas = FacturaLeonisa.objects.all()
-            facmeses = allFacturas(facturas)
-        elif salesName == "moda":
-            allventas = SaleModa.objects.all()
-            venmeses = allVentas(allventas)
-            facturas = FacturaModa.objects.all()
-            facmeses = allFacturas(facturas)
-        else:
-            messages.info(request, 'No se encontro data')
-            return redirect('cuentas')
-
-        if month in facmeses:
+        if month in invoicesMonth:
             messages.warning(request, 'La Factura de ese mes ya esta procesada')
             return redirect('cuentas')
         else:
@@ -207,51 +205,35 @@ def loadXlsxFactura(request):
                     'codigo': data[0]
                     , 'descripcion': data[1]
                     , 'cantidad': data[2]
-                    , 'catalogo':data[3]
+                    , 'precio':data[3]
                     , 'ganancia':data[4]
                 }
+                Invoice.objects.create (
+                    revista=revista
+                    , codigo=oneData['codigo']
+                    , descripcion=oneData['descripcion']
+                    , cantidad=oneData['cantidad']
+                    , precio=oneData['precio']
+                    , ganancia=oneData['ganancia']
+                    , month=month
+                )
 
-                if salesName == "novaventa":
-                    FacturaNova.objects.create (
-                        codigo=oneData['codigo']
-                        , descripcion=oneData['descripcion']
-                        , cantidad=oneData['cantidad']
-                        , catalogo=oneData['catalogo']
-                        , ganancia=oneData['ganancia']
-                        , month=month
-                    )
-                if salesName == "leonisa":
-                    FacturaLeonisa.objects.create (
-                        codigo=oneData['codigo']
-                        , descripcion=oneData['descripcion']
-                        , cantidad=oneData['cantidad']
-                        , catalogo=oneData['catalogo']
-                        , ganancia=oneData['ganancia']
-                        , month=month
-                    )
-                if salesName == "moda":
-                    FacturaModa.objects.create (
-                        codigo=oneData['codigo']
-                        , descripcion=oneData['descripcion']
-                        , cantidad=oneData['cantidad']
-                        , catalogo=oneData['catalogo']
-                        , ganancia=oneData['ganancia']
-                        , month=month
-                    )
+            if month in salesMonth:
+                cobros, facturas, ventas = verificaVentas(revista, month)
+                context = {"title":"Facturas", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
+                return render(request, "sales/revisarDocumentos.html", context)
 
-            if month in venmeses:
-                createCuentaCobro(salesName, month)
-            
-        if salesName == "novaventa":
-            facturas = FacturaNova.objects.all()
-        elif salesName == "leonisa":
-            facturas = FacturaLeonisa.objects.all()
-        elif salesName == "moda":
-            facturas = FacturaModa.objects.all()
-
-        context = {"title":"Facturas", 'salesName':salesName, 'month':month, 'facturas':facturas}
+        facturas = Invoice.objects.filter(month=month).values().order_by('codigo')
+        context = {"title":"Facturas", 'revista':revista, 'month':month, 'facturas':facturas}
         return render(request, "sales/showRemis.html", context)
 
     context = {"title": "Factura Ventas"}
     return render(request, "sales/registroRemis.html", context)
 
+
+def revisarDocumentos(request):
+    revista = "novaventa"
+    month = 'Nov22'
+    cobros, ventas, facturas = verificaVentas(revista, month)
+    context = {"title":"Facturas", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
+    return render(request, "sales/revisarDocumentos.html", context)
