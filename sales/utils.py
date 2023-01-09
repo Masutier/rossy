@@ -156,7 +156,7 @@ def createCuentaCobro(revista, month, facturas, sillego3, olvidos, nollego, sill
             if factura.codigo == sill3.codigo:
                 today = date.today()
                 fechaLimite = today + timedelta(days=15)
-                sicobros.append({
+                sicobros = {
                     'revista':revista
                     , 'month':month
                     , 'codigo':sill3.codigo
@@ -165,16 +165,16 @@ def createCuentaCobro(revista, month, facturas, sillego3, olvidos, nollego, sill
                     , 'cantidad':sill3.cantidad
                     , 'precio':sill3.precio
                     , 'fechaLimite':fechaLimite
-                    })
+                }
                 Receipt.objects.create (
                     revista=revista
                     , month=month
-                    , codigo=sill['codigo']
-                    , comprador=sill['comprador']
-                    , descripcion=sill['descripcion']
-                    , cantidad=sill['cantidad']
-                    , precio=sill['precio']
-                    , fechaLimite=sill['fechaLimite']
+                    , codigo=sicobros['codigo']
+                    , comprador=sicobros['comprador']
+                    , descripcion=sicobros['descripcion']
+                    , cantidad=sicobros['cantidad']
+                    , precio=sicobros['precio']
+                    , fechaLimite=sicobros['fechaLimite']
                 )
     
     for olvido in olvidos:
