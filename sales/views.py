@@ -75,22 +75,28 @@ def cuentas(request):
             month = request.POST.get('receiptNova')
             salesName = "NovaVenta"
             revista = "novaventa"
-            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('codigo')
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
+            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('comprador')
+            ventas = Sale.objects.filter(revista=revista, month=month, arrive=False).values().order_by('codigo')
+            facturas = Invoice.objects.filter(revista=revista, month=month, forget=True).values().order_by('codigo')
+            context = {"title":"Cobros", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
             return render(request, "sales/showCobros.html", context)
         elif request.POST.get('receiptLeo'):
             month = request.POST.get('receiptLeo')
             salesName = "Leonisa"
             revista = "leonisa"
-            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('codigo')
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
+            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('comprador')
+            ventas = Sale.objects.filter(revista=revista, month=month, arrive=False).values().order_by('codigo')
+            facturas = Invoice.objects.filter(revista=revista, month=month, forget=True).values().order_by('codigo')
+            context = {"title":"Cobros", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
             return render(request, "sales/showCobros.html", context)
         elif request.POST.get('receiptModa'):
             month = request.POST.get('receiptModa')
             salesName = "Moda Internacional"
             revista = "moda"
-            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('codigo')
-            context = {"title":"Cobros", 'salesName':salesName, 'month':month, 'cobros':cobros}
+            cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('comprador')
+            ventas = Sale.objects.filter(revista=revista, month=month, arrive=False).values().order_by('codigo')
+            facturas = Invoice.objects.filter(revista=revista, month=month, forget=True).values().order_by('codigo')
+            context = {"title":"Cobros", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
             return render(request, "sales/showCobros.html", context)
 
     context = {
@@ -147,7 +153,6 @@ def loadXlsxSales(request):
                     , 'precio': data[2]
                     , 'comprador': data[3]
                 }
-
                 Sale.objects.create (
                     revista=revista
                     , codigo=oneData['codigo']
@@ -158,7 +163,9 @@ def loadXlsxSales(request):
                 )
 
             if month in invoicesMonth:
-                verificaVentas(revista, month)
+                cobros, facturas, ventas = verificaVentas(revista, month)
+                context = {"title":"Facturas", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
+                return render(request, "sales/revisarDocumentos.html", context)
 
             ventas = Sale.objects.filter(month=month).values().order_by('codigo')
             context = {"title":"Ventas", 'revista':revista, 'month':month, 'ventas':ventas}
@@ -201,12 +208,13 @@ def loadXlsxFactura(request):
             row_data=list(xlsxFile.values.tolist())
 
             for data in row_data:
+                unidad = data[3] / data[2]
                 oneData = {
                     'codigo': data[0]
                     , 'descripcion': data[1]
                     , 'cantidad': data[2]
-                    , 'precio':data[3]
-                    , 'ganancia':data[4]
+                    , 'precio': unidad
+                    , 'ganancia': data[4]
                 }
                 Invoice.objects.create (
                     revista=revista
@@ -234,6 +242,8 @@ def loadXlsxFactura(request):
 def revisarDocumentos(request):
     revista = "novaventa"
     month = 'Nov22'
-    cobros, ventas, facturas = verificaVentas(revista, month)
+    cobros = Receipt.objects.filter(revista=revista, month=month).values().order_by('comprador')
+    ventas = Sale.objects.filter(revista=revista, month=month, arrive=False).values().order_by('codigo')
+    facturas = Invoice.objects.filter(revista=revista, month=month, forget=True).values().order_by('codigo')
     context = {"title":"Facturas", 'revista':revista, 'month':month, 'cobros':cobros, 'facturas':facturas, 'ventas':ventas}
     return render(request, "sales/revisarDocumentos.html", context)

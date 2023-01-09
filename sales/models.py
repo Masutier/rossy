@@ -9,6 +9,7 @@ class Sale(models.Model):
     cantidad = models.DecimalField(max_digits=6, decimal_places=0, blank=True, null=True)
     precio = models.DecimalField(max_digits=8, decimal_places=2, blank=True, null=True)
     month = models.CharField(max_length=30)
+    arrive = models.BooleanField(blank=True, null=True, default=False)
 
 
     def __str__(self):
@@ -27,6 +28,7 @@ class Invoice(models.Model):
     precio = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
     ganancia = models.DecimalField(max_digits=8, decimal_places=0, blank=True, null=True)
     month = models.CharField(max_length=30)
+    forget = models.BooleanField(blank=True, null=True, default=False)
 
 
     def __str__(self):

@@ -42,8 +42,6 @@ def meses(revista):
 
 
 def verificaVentas(revista, month):
-    revista = revista
-    month = month
     faccode = []
     vencode = []
     ventas2 = []
@@ -76,7 +74,6 @@ def verificaVentas(revista, month):
             if sd['codigo'] == venta.codigo:
                 qty = qty + venta.cantidad
                 precio = venta.precio
-                comprador = 'varios'
         ventas2.append({
             'codigo':sd['codigo']
             , 'cantidad':qty
@@ -104,6 +101,7 @@ def verificaVentas(revista, month):
                 venta2['cantidad'] = noEsta
                 sillego5.append(venta2)
                 ventas3.append(venta2)
+
     for venta in ventas:
         for sill2 in sillego2:
             if venta.codigo == sill2['codigo']:
@@ -123,25 +121,11 @@ def verificaVentas(revista, month):
             if venta.codigo == venta2['codigo']:
                 if venta not in nollego:
                     nollego.append(venta)
-
-    # sillego == UNION DE sillego2 CON FACTURA Y FECHA == db --> Receipt
-    for factura in facturas:
+        # SI LLEGO
         for sill3 in sillego3:
-            if factura.codigo == sill3.codigo:
-                today = date.today()
-                fechaLimite = today + timedelta(days=15)
-                sillego.append({
-                    'revista':revista
-                    , 'month':month
-                    , 'codigo':sill3.codigo
-                    , 'comprador':sill3.comprador
-                    , 'descripcion':factura.descripcion
-                    , 'cantidad':sill3.cantidad
-                    , 'precio':sill3.precio
-                    , 'fechaLimite':fechaLimite
-                    })
-    
-    ############     createCuentaCobro(sillego)
+            if venta.codigo == sill3.codigo:
+                if venta not in sillego:
+                    sillego.append(venta)
 
     # SE OLVIDO
     for fcode in faccode:
@@ -156,36 +140,66 @@ def verificaVentas(revista, month):
                 factura.cantidad = olvido['cantidad']
                 olvidos.append(factura)
 
+    # CREAR COBROS (Receipt)
+    salesMesesNova, invoicesMesesNova, receiptMesesNova = meses(revista)
+    if month not in receiptMesesNova:
+        createCuentaCobro(revista, month, facturas, sillego3, olvidos, nollego, sillego)
+
     return sillego, nollego, olvidos
 
 
-def createCuentaCobro(sillego):
+def createCuentaCobro(revista, month, facturas, sillego3, olvidos, nollego, sillego):
+    sicobros = []
 
-
-    Receipt.objects.create (
-        revista = revista
-        , month = month
-        , codigo = codigo
-        , descripcion = descripcion
-        , comprador = comprador
-        , cantidad = cantidad
-        , precio = precio
-        , fechaLimite = fechaLimite
-    )
+    for factura in facturas:
+        for sill3 in sillego3:
+            if factura.codigo == sill3.codigo:
+                today = date.today()
+                fechaLimite = today + timedelta(days=15)
+                sicobros.append({
+                    'revista':revista
+                    , 'month':month
+                    , 'codigo':sill3.codigo
+                    , 'comprador':sill3.comprador
+                    , 'descripcion':factura.descripcion
+                    , 'cantidad':sill3.cantidad
+                    , 'precio':sill3.precio
+                    , 'fechaLimite':fechaLimite
+                    })
+                Receipt.objects.create (
+                    revista=revista
+                    , month=month
+                    , codigo=sill['codigo']
+                    , comprador=sill['comprador']
+                    , descripcion=sill['descripcion']
+                    , cantidad=sill['cantidad']
+                    , precio=sill['precio']
+                    , fechaLimite=sill['fechaLimite']
+                )
+    
+    for olvido in olvidos:
+        olvido.forget = True
+        Invoice.objects.filter(id = olvido.id).update(forget = True)
+    for noll in nollego:
+        noll.arrive = False
+        Sale.objects.filter(id = noll.id).update(arrive = False)
+    for sill in sillego:
+        sill.arrive = True
+        Sale.objects.filter(id = sill.id).update(arrive = True)
 
 
 def revisarDocumentos(salesName, revista, month):
     if revista == "novaventa":
-        ventas = Sale.objects.filter(month=month).values()
-        facturas = Invoice.objects.filter(month=month).values()
-        cobros, ventas, facturas = processCobro(revista, ventas, facturas, month)
+        ventas = Sale.objects.filter(revista=revista, month=month).values()
+        facturas = Invoice.objects.filter(revista=revista, month=month).values()
+        cobros = Receipt.objects.filter(revista=revista, month=month).values()
     elif revista == "leonisa":
-        ventas = Sale.objects.filter(month=month).values()
-        facturas = Invoice.objects.filter(month=month).values()
-        cobros, ventas, facturas = processCobro(revista, ventas, facturas, month)
+        ventas = Sale.objects.filter(revista=revista, month=month).values()
+        facturas = Invoice.objects.filter(revista=revista, month=month).values()
+        cobros = Receipt.objects.filter(revista=revista, month=month).values()
     elif revista == "moda":
-        ventas = Sale.objects.filter(month=month).values()
-        facturas = Invoice.objects.filter(month=month).values()
-        cobros, ventas, facturas = processCobro(revista, ventas, facturas, month)
+        ventas = Sale.objects.filter(revista=revista, month=month).values()
+        facturas = Invoice.objects.filter(revista=revista, month=month).values()
+        cobros = Receipt.objects.filter(revista=revista, month=month).values()
 
     return cobros, ventas, facturas
