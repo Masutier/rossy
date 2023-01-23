@@ -1,0 +1,105 @@
+{% extends 'rossy/layout.html' %}
+{% load humanize %}
+{% load static %}
+
+{% block title %}{{title}}{% endblock %}
+
+{% block content %}
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h3 class="mb-3 atxt1">No Llego</h3>
+    <table class="table table-dark table-striped table.sm">
+        <thead>
+            <tr>
+                <th>codigo</th>
+                <th>cantidad</th>
+                <th>precio</th>
+                <th>comprador</th>
+                <th>revista</th>
+                <th>month</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in nollego %}
+                <tr>
+                    <td>{{ venta.codigo }}</td>
+                    <td>{{ venta.cantidad }}</td>
+                    <td>{{ venta.precio|intcomma }}</td>
+                    <td class="txtupp">{{ venta.comprador }}</td>
+                    <td class="txtupp">{{ venta.revista }}</td>
+                    <td>{{ venta.month }}</td>
+                    <td>
+
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h3 class="mb-3 atxt1">Se me olvido ponerlo en la lista</h3>
+    <table class="table table-dark table-striped table.sm">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>codigo</th>
+                <th>descripción</th>
+                <th>cantidad</th>
+                <th>valor</th>
+                <th>revista</th>
+                <th>month</th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for olvido in olvidos %}
+                <tr>
+                    <td>{{ olvido.id }}</td>
+                    <td>{{ olvido.codigo }}</td>
+                    <td class="txtupp">{{ olvido.descripcion }}</td>
+                    <td>{{ olvido.cantidad }}</td>
+                    <td>{{ olvido.precio|intcomma }}</td>
+                    <td class="txtupp">{{ olvido.revista }}</td>
+                    <td>{{ olvido.month }}</td>
+
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="col-9 mx-auto mt-3 mb-5">
+    <h3 class="mb-3 atxt1">Cobros del mes de {{ month }}</h3>
+    <table class="table table-dark table-striped table.sm">
+        <thead>
+            <tr>
+                <th>revista</th>
+                <th>month</th>
+                <th>codigo</th>
+                <th>comprador</th>
+                <th>descripción</th>
+                <th>cantidad</th>
+                <th>valor</th>
+                <th>Fecha Limite</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cobro in sillego %}
+                <tr>
+                    <td>{{ cobro.revista }}</td>
+                    <td>{{ cobro.month }}</td>
+                    <td>{{ cobro.codigo }}</td>
+                    <td class="txtupp">{{ cobro.comprador }}</td>
+                    <td class="txtupp">{{ cobro.descripcion }}</td>
+                    <td>{{ cobro.cantidad }}</td>
+                    <td>{{ cobro.catalogo|intcomma }}</td>
+                    <td>{{ cobro.fechaLimite }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

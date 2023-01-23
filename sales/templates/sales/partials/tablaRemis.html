@@ -9,8 +9,8 @@
             <th>descripción</th>
             <th>cantidad</th>
             <th>valor</th>
+            <th>revista</th>
             <th>month</th>
-            <th>Crear Venta</th>
             <th>Editar</th>
         </tr>
     </thead>
@@ -21,11 +21,9 @@
                 <td>{{ factura.codigo }}</td>
                 <td class="txtupp">{{ factura.descripcion }}</td>
                 <td>{{ factura.cantidad }}</td>
-                <td>{{ factura.catalogo|intcomma }}</td>
+                <td>{{ factura.precio|intcomma }}</td>
+                <td class="txtupp">{{ factura.revista }}</td>
                 <td>{{ factura.month }}</td>
-                <td>
-                    <a class="btn btn-primary btn-color2 btn-sm mx-auto" href="{% url 'adicionarVenta' %}">Crear Venta</a>
-                </td>
                 <td>
                     <a class="btn btn-primary btn-color btn-sm mx-auto" href="{% url 'modificarRemision' factura.id %}">Editar</a>
                 </td>

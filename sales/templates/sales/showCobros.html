@@ -6,29 +6,35 @@
 
 {% block content %}
 <div class="col-9 mx-auto mt-3 mb-5">
-    <h2>Cuentas de Cobro de {{ salesName }}</h2>
+    <h2>Cuentas de Cobro de {{ revista }}</h2>
     <h4>Mes de {{ month }}</h4>
     
     <form method="POST" id="impNova">
         {% csrf_token %}
-        <h4 hidden>revistaName = {{ salesName }}</h4>
-        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="impNova" value="{{ month }}">Imprimir</button>
+        <h4 hidden>revistaName = {{ revista }}</h4>
+        <button class="btn btn-primary btn-color mx-auto mt-3" type="submit" name="impRevista" value="{{ month }}">Imprimir</button>
     </form>
 </div>
 
-<div class="col-9 mx-auto mt-3 mb-5">
-    <h3 class="mb-3 atxt1">No Llego</h3>
-    {% include 'sales/partials/tablaVentas.html' %}
-</div>
+{% if ventas %}
+    <div class="col-10 mx-auto mt-3 mb-5">
+        <h3 class="mb-3 atxt1">No Llego</h3>
+        {% include 'sales/partials/tablaVentas.html' %}
+    </div>
+{% endif %}
 
-<div class="col-9 mx-auto mt-3 mb-5">
-    <h3 class="mb-3 atxt1">Se me olvido ponerlo en la lista</h3>
-    {% include 'sales/partials/tablaRemis.html' %}
-</div>
+{% if facturas %}
+    <div class="col-10 mx-auto mt-3 mb-5">
+        <h3 class="mb-3 atxt1">Se me olvido ponerlo en la lista</h3>
+        {% include 'sales/partials/tablaRemis.html' %}
+    </div>
+{% endif %}
 
-<div class="col-9 mx-auto mt-3 mb-5">
-    <h3 class="mb-3 atxt1">Cobros del mes de {{ month }}</h3>
-    {% include 'sales/partials/tablaCobros.html' %}
-</div>
+{% if cobros %}
+    <div class="col-10 mx-auto mt-3 mb-5">
+        <h3 class="mb-3 atxt1">Cobros del mes de {{ month }}</h3>
+        {% include 'sales/partials/tablaCobros.html' %}
+    </div>
+{% endif %}
 
 {% endblock %}
