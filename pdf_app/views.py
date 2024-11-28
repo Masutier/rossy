@@ -2,7 +2,7 @@ import json
 import os
 from django.contrib import messages
 from django.shortcuts import render, redirect
-from PyPDF2 import PdfFileReader, PdfFileWriter, PdfReader
+from PyPDF2 import PdfReader, PdfWriter, PdfReader
 from .utils import *
 
 destiny_path = "/home/gabriel/Documents/catalogRossy/destiny/"
@@ -54,55 +54,55 @@ def pdfLoad(request):
 
             #OPEN FILE
             with open(file_tp_pross, "rb") as f:
-                reader = PdfFileReader(f)
+                reader = PdfReader(f)
 
-                part1 = PdfFileWriter()
+                part1 = PdfWriter()
                 first = list(range(0, 51))
 
-                part2 = PdfFileWriter()
+                part2 = PdfWriter()
                 second = list(range(50, 101))
 
-                part3 = PdfFileWriter()
+                part3 = PdfWriter()
                 third = list(range(100, 151))
 
-                part4 = PdfFileWriter()
+                part4 = PdfWriter()
                 fourth = list(range(150, 201))
 
-                part5 = PdfFileWriter()
+                part5 = PdfWriter()
                 fifth = list(range(200, 251))
                 
-                part6 = PdfFileWriter()
+                part6 = PdfWriter()
                 sixth = list(range(250, 301))
 
                 for page in range(len(reader.pages)):
                     if page in first:
                         count1 += 1
-                        part1.addPage(reader.getPage(page))
+                        part1.add_page(reader.pages[page])
                         firstcount = 1
 
                     if page in second:
                         count2 += 1
-                        part2.addPage(reader.getPage(page))
+                        part2.add_page(reader.pages[page])
                         secondcount = 1
 
                     if page in third:
                         count3 += 1
-                        part3.addPage(reader.getPage(page))
+                        part3.add_page(reader.pages[page])
                         thirdcount = 1
 
                     if page in fourth:
                         count4 += 1
-                        part4.addPage(reader.getPage(page))
+                        part4.add_page(reader.pages[page])
                         fourthcount = 1
                     
                     if page in fifth:
                         count5 += 1
-                        part5.addPage(reader.getPage(page))
+                        part5.add_page(reader.pages[page])
                         fifthcount = 1
 
                     if page in sixth:
                         count6 += 1
-                        part6.addPage(reader.getPage(page))
+                        part6.add_page(reader.pages[page])
                         sixthcount = 1
 
                 pieceOut = destiny_path + fileNamex[0] + "_" + month + "/" + fileNamex[0]

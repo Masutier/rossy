@@ -1,0 +1,6 @@
+[Desktop Entry]
+Version = 1.0
+Name = Ross Aplication
+Exec = /home/gabriel/prog/rossy/rossy.sh
+icon = /home/gabriel/prog/rossy/static/img/Rossy.jpg
+Type = Application
